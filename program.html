@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RealITy XIII: Metropolis</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+        /* Root variables for consistent color scheme */
+        :root {
+        --primary: #ab42e8;
+        --primary-light: #d69ff2;
+        --primary-dark: #8a35b9;
+        --dark: #0e0e14;
+        --light: #ededf1;
+        --gray: #666;
+        --white: #eaeaea;
+        --gradient: linear-gradient(to right, #30408e,  #bd61ea);
+        --gradient-btn: linear-gradient(to top, #30408e,  #bd61ea);
+    }
+
+    * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            height: 100%;
+            width: 100%;
+            overflow-y: auto;
+            background-color: #f5f7fa;
+            color: #333;
+            scroll-behavior: smooth;
+        }
+        
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            padding: 15px 0;
+            background-color: var(--light);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-png {
+            width: 40px;
+            height: auto;
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            text-transform: uppercase;
+            font-size: 14px;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a.active-s {
+            color: var(--primary);
+        }
+
+        .nav-links a.active-s::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--primary);
+        }
+
+
+        /* Main Content */
+        main {
+            padding-top: 80px; /* Space for fixed header */
+            min-height: calc(100vh - 80px - 320px); /* Subtract header and footer height */
+            overflow-y: auto;
+        }
+
+        .program-header {
+            background: var(--gradient);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .program-header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .program-header p {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+        .current-session {
+            background: #f0e7ff;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid var(--primary);
+            max-width: 1000px;
+        }
+
+        .current-time {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-event {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .time-left {
+            color: var(--primary-dark);
+            font-weight: 500;
+        }
+
+        .scroll-controls {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 12px 32px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(124, 58, 237, 0.3);
+        }
+
+        .schedule {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            max-width: 1000px;
+            margin: 0 auto 3rem;
+        }
+
+        .schedule-item {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s ease;
+        }
+
+        .schedule-item:last-child {
+            border-bottom: none;
+        }
+
+        .schedule-time {
+            background: #f7f2ff;
+            padding: 1.5rem;
+            font-weight: bold;
+            width: 180px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            border-right: 1px solid #eee;
+        }
+
+        .schedule-details {
+            padding: 1.5rem;
+            flex: 1;
+        }
+
+        .schedule-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            font-size: 18px;
+        }
+
+        .schedule-description {
+            color: var(--gray);
+            font-size: 0.9rem;
+            padding-left: 1rem;
+        }
+
+        .schedule-description div {
+            margin-bottom: 0.25rem;
+        }
+
+        .schedule-item.upcoming {
+        border-left: 4px solid var(--primary-dark);
+        background-color: rgba(207, 193, 193, 0.295);
+    }
+
+        .active {
+            background: #f0e7ff;
+            border-left: 5px solid var(--primary);
+        }
+
+        .completed {
+            opacity: 0.7;
+        }
+
+        #next-session {
+            background: var(--gray); /* A subtle gray gradient */
+            color: var(--white); /* Keeps the text color white */
+        }
+
+        #next-session:hover {
+            background: linear-gradient(135deg, #999999, #666666); /* Darker gray gradient on hover */
+            color: var(--white); /* Keeps the text color white */
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(128, 128, 128, 0.4); /* Gray shadow to match the gradient */
+        }
+
+
+
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            padding: 60px 0 20px;
+            color: var(--white);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .footer-logo span {
+            color: var(--primary);
+        }
+
+        .footer-column p {
+            color: #aaa;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-link {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .social-link:hover {
+            background-color: var(--primary);
+        }
+
+        .footer-column h3 {
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: var(--primary-light);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 12px;
+        }
+
+        .footer-column a {
+            text-decoration: none;
+            color: #aaa;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: var(--primary-light);
+        }
+
+        .footer-column i {
+            margin-right: 8px;
+            color: var(--primary);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        .copyright a {
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+
+        .copyright i {
+            color: #ff5e5e;
+            margin: 0 3px;
+        }
+
+       
+/* Animations */
+@keyframes rotateLogo {
+    0% {
+        transform: rotateY(0deg);
+    }
+    100% {
+        transform: rotateY(360deg);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .hero-text {
+        width: 400px;
+    }
+    
+    .about-grid,
+    .contests-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    .hamburger {
+        display: block;
+    }
+    .hero {
+        height: 80vh;
+    }
+    
+    .hero-logo {
+        width: 140px;
+    }
+    
+    .hero-text {
+        width: 320px;
+    }
+    
+    .about-grid,
+    .contests-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .sponsors {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding: 20px 0;
+        scroll-snap-type: x mandatory;
+    }
+    
+    .sponsor {
+        flex: 0 0 auto;
+        width: 150px;
+        scroll-snap-align: start;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-text {
+        width: 280px;
+    }
+    
+    .hero-date {
+        font-size: 14px;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none !important; /* force hidden by default */
+        flex-direction: column;
+        gap: 10px;
+        background-color: white;
+        padding: 10px;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        text-align: center;
+    }
+
+    .nav-links.show {
+        display: flex !important; /* force visible when toggled */
+    }  
+
+    .hamburger {
+        display: block;
+    }
+
+    nav {
+        position: relative;
+    }
+    
+    .schedule-item {
+        flex-direction: column;
+    }
+    
+    .schedule-time {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #eee;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo-container">
+                    <a href="index.html"> <img src="logo.png" alt="reality logo" class="logo-png"></a>
+                    <div class="logo">Real<span>IT</span>y XIII.</div>
+                </div>
+                <div class="nav-links"  id="navLinks">
+                    <a href="index.html">Home</a>
+                    <a href="program.html" class="active-s">Program</a>
+                    <a href="contest.html">Contests</a>
+                    <a href="faq.html">FAQs</a>
+                    <a href="aboutus.html">About Us</a>
+                </div>
+                <div class="hamburger" id="hamburger">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="program-header">
+            <div class="container">
+                <h1>RealITy XIII: Metropolis Program Flow</h1>
+                <p>Stay updated with our real-time program flow!</p>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="current-session">
+                <div class="current-time" id="current-time">Current Time: --:-- --</div>
+                <h2 class="current-event" id="current-event">Loading current session...</h2>
+                <p class="time-left" id="time-left">Calculating time remaining...</p>
+            </div>
+            
+            <div class="scroll-controls">
+                <button class="btn" id="scroll-to-current">Current Session</button>
+                <button class="btn" id="next-session">Next Session</button>
+            </div>
+            
+            <div class="schedule" id="schedule">
+                <!-- Schedule items will be populated by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-logo">Real<span>IT</span>y XIII.</div>
+                    <p>The premier IT event at West Visayas State University by LINK.exe, showcasing innovation and technology.</p>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Navigation</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="program.html">Program</a></li>
+                        <li><a href="contest.html">Contests</a></li>
+                        <li><a href="faq.html">FAQs</a></li>
+                        <li><a href="aboutus.html">About Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Link.exe</h3>
+                    <ul>
+                        <li>Room 103, CICT Building</li>
+                        <li>West Visayas State University</li>
+                        <li>Luna St., Lapaz</li>
+                        <li>Iloilo City</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-envelope"></i> link.exe@wvsu.edu.ph</a></li>
+                        <li><a href="https://www.facebook.com/realityxiiiofficial"><i class="fab fa-facebook"></i> Reality Official Page</a></li>
+                        <li><a href="https://www.facebook.com/linkexeofficial"><i class="fab fa-facebook"></i> LINK.exe Official Page</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                Made with <i class="fas fa-heart"></i> by <a href="https://www.facebook.com/kr.montenegro.5" target="_blank">Karlo</a> and <a href="https://www.facebook.com/meage.sionosa" target="_blank">Meage</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Program schedule data
+        const schedule = [
+            {
+                id: 1,
+                timeStart: '07:00',
+                timeEnd: '08:00',
+                title: 'REGISTRATION',
+                description: []
+            },
+            {
+                id: 2,
+                timeStart: '08:00',
+                timeEnd: '08:30',
+                title: 'OPENING PROGRAM',
+                description: [
+                    'Invocation',
+                    'Singing of National Anthem',
+                    'WVSU Hymn',
+                    'Welcoming Remarks - Miguel Jacob Artillero, VP for Program, LINK.exe',
+                    'Message - Dr. Ma. Beth S. Concepcion, Dean, CICT'
+                ]
+            },
+            {
+                id: 3,
+                timeStart: '08:30',
+                timeEnd: '11:30',
+                title: 'Tech-TALK',
+                description: [
+                    'Talk Proper - Engr. Laurelly Joyce Aporto, Guest Speaker',
+                    'Open Mic for Attendees - Engr. Laurelly Joyce Aporto',
+                    'Awarding of Token and Certificate to Speaker - Miguel Jacob Artillero, VP for Program, LINK.exe'
+                ]
+            },
+            {
+                id: 4,
+                timeStart: '11:30',
+                timeEnd: '13:00',
+                title: 'LUNCH',
+                description: []
+            },
+            {
+                id: 5,
+                timeStart: '13:00',
+                timeEnd: '16:20',
+                title: 'CONTEST PROPER',
+                description: [
+                    'IDEATHON - Introduction of Judges and Reading of Criteria',
+                    'Pitching Proper - All registered IDEATHON participants'
+                ]
+            },
+            {
+                id: 6,
+                timeStart: '16:20',
+                timeEnd: '17:00',
+                title: 'AWARDING',
+                description: [
+                    'Awarding of Winners of METROPOLENS (Photo Contest)',
+                    'Awarding of Winners of PIXELCRAFT (Digital Art Contest)',
+                    'Awarding of Winners of REEL-IT (Video Reels Contest)',
+                    'Awarding of Winners of IDEATHON (Pitching Contest)',
+                    'Awarding of Certificates to Partner Organizations and Student Councils'
+                ]
+            },
+            {
+                id: 7,
+                timeStart: '17:00',
+                timeEnd: '17:30',
+                title: 'CLOSING PROGRAM',
+                description: [
+                    'Closing Remarks - Miguel Jacob Artillero, VP for Program, LINK.exe',
+                    'Photo Opportunity'
+                ]
+            }
+        ];
+
+        // Function to format time from 24-hour to 12-hour format
+        function formatTime(time) {
+            const [hours, minutes] = time.split(':');
+            const hour = parseInt(hours);
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const formattedHour = hour % 12 || 12;
+            return `${formattedHour}:${minutes} ${ampm}`;
+        }
+
+        // Function to convert time string to Date object
+        function timeToDate(timeStr) {
+            const today = new Date();
+            const [hours, minutes] = timeStr.split(':');
+            
+            today.setHours(parseInt(hours));
+            today.setMinutes(parseInt(minutes));
+            today.setSeconds(0);
+            
+            return today;
+        }
+
+        // Find current event index
+        function getCurrentEventIndex() {
+            const now = new Date();
+            
+            for (let i = 0; i < schedule.length; i++) {
+                const startTime = timeToDate(schedule[i].timeStart);
+                const endTime = timeToDate(schedule[i].timeEnd);
+                
+                if (now >= startTime && now < endTime) {
+                    return i;
+                }
+            }
+            
+            // If current time is before first event
+            if (now < timeToDate(schedule[0].timeStart)) {
+                return 0;
+            }
+            
+            // If current time is after last event
+            return schedule.length - 1;
+        }
+
+        // Function to render the schedule
+        function renderSchedule() {
+            const scheduleContainer = document.getElementById('schedule');
+            scheduleContainer.innerHTML = '';
+            
+            const now = new Date();
+            
+            schedule.forEach(item => {
+                const startTime = timeToDate(item.timeStart);
+                const endTime = timeToDate(item.timeEnd);
+                
+                const isActive = now >= startTime && now < endTime;
+                const isCompleted = now > endTime;
+                
+                const scheduleItem = document.createElement('div');
+                scheduleItem.className = `schedule-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}`;
+                scheduleItem.id = `item-${item.id}`;
+                
+                scheduleItem.innerHTML = `
+                    <div class="schedule-time">${formatTime(item.timeStart)} - ${formatTime(item.timeEnd)}</div>
+                    <div class="schedule-details">
+                        <div class="schedule-title">${item.title}</div>
+                        <div class="schedule-description">
+                            ${item.description.length > 0 ? 
+                                item.description.map(desc => `<div>${desc}</div>`).join('') : 
+                                '<div>No additional details</div>'}
+                        </div>
+                    </div>
+                `;
+                
+                scheduleContainer.appendChild(scheduleItem);
+            });
+        }
+
+        // Function to update current session
+        function updateCurrentSession() {
+            const now = new Date();
+            const currentTimeElement = document.getElementById('current-time');
+            const currentEventElement = document.getElementById('current-event');
+            const timeLeftElement = document.getElementById('time-left');
+            
+            // Format current time
+            const hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            const formattedHours = hours % 12 || 12;
+            
+            currentTimeElement.textContent = `Current Time: ${formattedHours}:${minutes} ${ampm}`;
+            
+            // Find current event
+            let currentEvent = null;
+            let currentEventIndex = -1;
+            
+            for (let i = 0; i < schedule.length; i++) {
+                const item = schedule[i];
+                const startTime = timeToDate(item.timeStart);
+                const endTime = timeToDate(item.timeEnd);
+                
+                if (now >= startTime && now < endTime) {
+                    currentEvent = item;
+                    currentEventIndex = i;
+                    break;
+                }
+            }
+            
+            // Update active class on all items
+            document.querySelectorAll('.schedule-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            if (currentEvent) {
+                currentEventElement.textContent = currentEvent.title;
+                
+                // Calculate time remaining
+                const endTime = timeToDate(currentEvent.timeEnd);
+                const timeRemaining = endTime - now;
+                
+                const minutesRemaining = Math.floor(timeRemaining / (1000 * 60));
+                const hoursRemaining = Math.floor(minutesRemaining / 60);
+                const remainingMinutes = minutesRemaining % 60;
+                
+                if (hoursRemaining > 0) {
+                    timeLeftElement.textContent = `Time Remaining: ${hoursRemaining}h ${remainingMinutes}m until next session`;
+                } else {
+                    timeLeftElement.textContent = `Time Remaining: ${remainingMinutes}m until next session`;
+                }
+                
+                // Highlight active session
+                const activeItem = document.getElementById(`item-${currentEvent.id}`);
+                if (activeItem) {
+                    activeItem.classList.add('active');
+                }
+            } else {
+                // Check if before first event
+                const firstEvent = schedule[0];
+                const firstEventStart = timeToDate(firstEvent.timeStart);
+                
+                if (now < firstEventStart) {
+                    currentEventElement.textContent = "Event hasn't started yet";
+                    
+                    const timeUntilStart = firstEventStart - now;
+                    const minutesUntilStart = Math.floor(timeUntilStart / (1000 * 60));
+                    const hoursUntilStart = Math.floor(minutesUntilStart / 60);
+                    const remainingMinutes = minutesUntilStart % 60;
+                    
+                    if (hoursUntilStart > 0) {
+                        timeLeftElement.textContent = `Starting in: ${hoursUntilStart}h ${remainingMinutes}m`;
+                    } else {
+                        timeLeftElement.textContent = `Starting in: ${remainingMinutes}m`;
+                    }
+                    
+                    // Highlight first item
+                    const firstItem = document.getElementById(`item-1`);
+                    if (firstItem) {
+                        firstItem.classList.add('active');
+                    }
+                } else {
+                    // After last event
+                    currentEventElement.textContent = "Event has concluded";
+                    timeLeftElement.textContent = "Thank you for participating!";
+                    
+                    // Highlight last item
+                    const lastItem = document.getElementById(`item-${schedule.length}`);
+                    if (lastItem) {
+                        lastItem.classList.add('active');
+                    }
+                }
+            }
+        }
+
+        function updateCurrentSession() {
+    const now = new Date();
+    const currentTimeElement = document.getElementById('current-time');
+    const currentEventElement = document.getElementById('current-event');
+    const timeLeftElement = document.getElementById('time-left');
+    
+    // Format current time
+    const hours = now.getHours();
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12;
+    
+    currentTimeElement.textContent = `Current Time: ${formattedHours}:${minutes} ${ampm}`;
+    
+    // Calculate days until May 8, 2025
+    const eventDate = new Date(2025, 4, 8); // May is month 4 (zero-indexed)
+    const timeDifference = eventDate.getTime() - now.getTime();
+    const daysUntilEvent = Math.ceil(timeDifference / (1000 * 3600 * 24));
+    
+    // Check if event is in the future, today, or in the past
+    if (daysUntilEvent > 1) {
+        // Changed this line to directly show the days count instead of "Event Countdown"
+        currentEventElement.textContent = `${daysUntilEvent} days`;
+        timeLeftElement.textContent = `until the event on May 8, 2025`;
+        
+        // No active session yet, but we can highlight the first item to show what's coming
+        document.querySelectorAll('.schedule-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        const firstItem = document.getElementById('item-1');
+        if (firstItem) {
+            firstItem.classList.add('upcoming');
+        }
+        return;
+    }
+    
+    // If it's May 8th (event day), proceed with the regular schedule functionality
+    if (daysUntilEvent === 1 || daysUntilEvent === 0) {
+        // Event is today
+        if (daysUntilEvent === 1) {
+            currentEventElement.textContent = "1 day";
+            timeLeftElement.textContent = "until the event on May 8, 2025";
+        } else {
+            // Find current event
+            let currentEvent = null;
+            
+            for (let i = 0; i < schedule.length; i++) {
+                const item = schedule[i];
+                const startTime = timeToDate(item.timeStart);
+                const endTime = timeToDate(item.timeEnd);
+                
+                if (now >= startTime && now < endTime) {
+                    currentEvent = item;
+                    break;
+                }
+            }
+            
+            // Update active class on all items
+            document.querySelectorAll('.schedule-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            if (currentEvent) {
+                currentEventElement.textContent = currentEvent.title;
+                
+                // Calculate time remaining
+                const endTime = timeToDate(currentEvent.timeEnd);
+                const timeRemaining = endTime - now;
+                
+                const minutesRemaining = Math.floor(timeRemaining / (1000 * 60));
+                const hoursRemaining = Math.floor(minutesRemaining / 60);
+                const remainingMinutes = minutesRemaining % 60;
+                
+                if (hoursRemaining > 0) {
+                    timeLeftElement.textContent = `Time Remaining: ${hoursRemaining}h ${remainingMinutes}m until next session`;
+                } else {
+                    timeLeftElement.textContent = `Time Remaining: ${remainingMinutes}m until next session`;
+                }
+                
+                // Highlight active session
+                const activeItem = document.getElementById(`item-${currentEvent.id}`);
+                if (activeItem) {
+                    activeItem.classList.add('active');
+                }
+            } else {
+                // Check if before first event
+                const firstEvent = schedule[0];
+                const firstEventStart = timeToDate(firstEvent.timeStart);
+                
+                if (now < firstEventStart) {
+                    currentEventElement.textContent = "Event starts today!";
+                    
+                    const timeUntilStart = firstEventStart - now;
+                    const minutesUntilStart = Math.floor(timeUntilStart / (1000 * 60));
+                    const hoursUntilStart = Math.floor(minutesUntilStart / 60);
+                    const remainingMinutes = minutesUntilStart % 60;
+                    
+                    if (hoursUntilStart > 0) {
+                        timeLeftElement.textContent = `Starting in: ${hoursUntilStart}h ${remainingMinutes}m`;
+                    } else {
+                        timeLeftElement.textContent = `Starting in: ${remainingMinutes}m`;
+                    }
+                    
+                    // Highlight first item
+                    const firstItem = document.getElementById(`item-1`);
+                    if (firstItem) {
+                        firstItem.classList.add('active');
+                    }
+                } else {
+                    // After last event
+                    currentEventElement.textContent = "Event has concluded";
+                    timeLeftElement.textContent = "Thank you for participating!";
+                    
+                    // Highlight last item
+                    const lastItem = document.getElementById(`item-${schedule.length}`);
+                    if (lastItem) {
+                        lastItem.classList.add('active');
+                    }
+                }
+            }
+        }
+    } else {
+        // Event has passed
+        currentEventElement.textContent = "Event has concluded";
+        timeLeftElement.textContent = "The event took place on May 8, 2025";
+    }
+}
+
+        // Toggle hamburger menu
+        function setupHamburgerMenu() {
+            const hamburger = document.getElementById('hamburger');
+            const navLinks = document.getElementById('navLinks');
+            
+            hamburger.addEventListener('click', function() {
+                navLinks.classList.toggle('show');
+            });
+        }
+
+        // Initialize and set up interval updates
+        function init() {
+            renderSchedule();
+            updateCurrentSession();
+            setupHamburgerMenu();
+            
+            // Set up scroll to current button
+            document.getElementById('scroll-to-current').addEventListener('click', scrollToCurrentSession);
+            
+            // Set up next session button
+            setupNextSessionButton();
+            
+            // Update every minute
+            setInterval(() => {
+                updateCurrentSession();
+            }, 60000);
+            
+            // Initial scroll to current session after a short delay
+            setTimeout(scrollToCurrentSession, 1000);
+        }
+
+        // Start when page loads
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

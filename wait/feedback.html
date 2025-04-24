@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback - College of Communication</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>College of Communication</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="feedback.html" class="active">Feedback</a></li>
+                <li><a href="order.html">Order</a></li>
+                <li><a href="admin.html">Admin</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h2>Anonymous Feedback</h2>
+            <p>Share your thoughts and suggestions with us. Your feedback is completely anonymous.</p>
+        </div>
+    </section>
+
+    <section class="feedback-form">
+        <div class="container">
+            <form id="anonymous-feedback">
+                <div class="form-group">
+                    <label for="feedback-type">Feedback Type:</label>
+                    <select id="feedback-type" required>
+                        <option value="">Select a category</option>
+                        <option value="course">Course Content</option>
+                        <option value="facility">Facilities</option>
+                        <option value="faculty">Faculty</option>
+                        <option value="events">Events</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="feedback-subject">Subject:</label>
+                    <input type="text" id="feedback-subject" placeholder="Brief subject of your feedback" required>
+                </div>
+                <div class="form-group">
+                    <label for="feedback-message">Your Feedback:</label>
+                    <textarea id="feedback-message" rows="6" placeholder="Please share your thoughts, suggestions, or concerns..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="rating">Rating (1-5):</label>
+                    <div class="rating-container">
+                        <input type="radio" id="star5" name="rating" value="5">
+                        <label for="star5">5</label>
+                        <input type="radio" id="star4" name="rating" value="4">
+                        <label for="star4">4</label>
+                        <input type="radio" id="star3" name="rating" value="3">
+                        <label for="star3">3</label>
+                        <input type="radio" id="star2" name="rating" value="2">
+                        <label for="star2">2</label>
+                        <input type="radio" id="star1" name="rating" value="1">
+                        <label for="star1">1</label>
+                    </div>
+                </div>
+                <div class="form-group submit-group">
+                    <p class="privacy-note">Note: This form is completely anonymous. We do not collect any identifying information.</p>
+                    <button type="submit" class="btn">Submit Feedback</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p>Email: info@collegeofcommunication.edu</p>
+                    <p>Phone: (555) 123-4567</p>
+                    <p>Address: 123 Campus Drive, University City</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="feedback.html">Feedback</a></li>
+                        <li><a href="order.html">Order</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 College of Communication. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.getElementById('anonymous-feedback').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const feedbackType = document.getElementById('feedback-type').value;
+            const subject = document.getElementById('feedback-subject').value;
+            const message = document.getElementById('feedback-message').value;
+            const rating = document.querySelector('input[name="rating"]:checked') ? 
+                           document.querySelector('input[name="rating"]:checked').value : null;
+            
+            // Create feedback object
+            const feedback = {
+                type: feedbackType,
+                subject: subject,
+                message: message,
+                rating: rating,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Get existing feedback from local storage or initialize empty array
+            let feedbackList = JSON.parse(localStorage.getItem('anonymousFeedback')) || [];
+            
+            // Add new feedback
+            feedbackList.push(feedback);
+            
+            // Save to local storage
+            localStorage.setItem('anonymousFeedback', JSON.stringify(feedbackList));
+            
+            // Reset form
+            this.reset();
+            
+            // Show confirmation
+            alert('Your feedback has been submitted anonymously. Thank you!');
+        });
+    </script>
+</body>
+</html>

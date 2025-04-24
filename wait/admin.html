@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - College of Communication</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>College of Communication - Admin Panel</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="feedback.html">Feedback</a></li>
+                <li><a href="order.html">Order</a></li>
+                <li><a href="admin.html" class="active">Admin</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="admin-dashboard">
+        <div class="admin-panel">
+            <div class="panel-header">
+                <h2>Orders</h2>
+            </div>
+            <div class="panel-body">
+                <table id="ordersTable">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Product</th>
+                            <th>Size</th>
+                            <th>Quantity</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Orders will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="admin-panel">
+            <div class="panel-header">
+                <h2>Feedback</h2>
+            </div>
+            <div class="panel-body">
+                <ul id="feedbackList">
+                    <!-- Feedback items will be dynamically inserted here -->
+                </ul>
+            </div>
+        </div>
+
+        <div class="admin-panel">
+            <div class="panel-header">
+                <h2>Change Announcements</h2>
+            </div>
+            <div class="panel-body">
+                <textarea id="announcementInput" placeholder="Enter new announcement..."></textarea>
+                <button onclick="updateAnnouncement()">Save Announcement</button>
+                <div id="currentAnnouncement">
+                    <h3>Current Announcement:</h3>
+                    <p id="announcementText">No announcements yet.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 College of Communication. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Example data for orders and feedback
+        const orders = [
+            { id: 1, product: "Hoodie", size: "M", quantity: 2, status: "Pending" },
+            { id: 2, product: "Lanyard", size: "N/A", quantity: 5, status: "Shipped" },
+            { id: 3, product: "Keychain", size: "N/A", quantity: 3, status: "Delivered" }
+        ];
+
+        const feedbacks = [
+            "Great products! Fast delivery!",
+            "I love the hoodie, but the size is too big.",
+            "Could improve the quality of the keychains."
+        ];
+
+        // Display orders
+        function displayOrders() {
+            const ordersTable = document.getElementById("ordersTable").getElementsByTagName('tbody')[0];
+            orders.forEach(order => {
+                const row = ordersTable.insertRow();
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${order.product}</td>
+                    <td>${order.size}</td>
+                    <td>${order.quantity}</td>
+                    <td>${order.status}</td>
+                `;
+            });
+        }
+
+        // Display feedback
+        function displayFeedback() {
+            const feedbackList = document.getElementById("feedbackList");
+            feedbacks.forEach(feedback => {
+                const li = document.createElement("li");
+                li.textContent = feedback;
+                feedbackList.appendChild(li);
+            });
+        }
+
+        // Update Announcement
+        function updateAnnouncement() {
+            const announcementInput = document.getElementById("announcementInput").value;
+            if (announcementInput) {
+                document.getElementById("announcementText").textContent = announcementInput;
+                document.getElementById("announcementInput").value = '';
+            } else {
+                alert("Please enter an announcement.");
+            }
+        }
+
+        // Initialize the admin panel
+        window.onload = function() {
+            displayOrders();
+            displayFeedback();
+        }
+    </script>
+</body>
+</html>
