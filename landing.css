@@ -320,6 +320,10 @@ main {
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
+.contest-card-link {
+    text-decoration: none;
+    color: inherit;
+}
 
 .contest-card:hover {
     transform: translateY(-10px);
@@ -361,10 +365,6 @@ main {
 
 .contest-card p {
     color: var(--primary);
-}
-.contest-card-link {
-    text-decoration: none;
-    color: inherit;
 }
 
 /* === Hover styles === */
