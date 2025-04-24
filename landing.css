@@ -362,6 +362,10 @@ main {
 .contest-card p {
     color: var(--primary);
 }
+.contest-card-link {
+    text-decoration: none;
+    color: inherit;
+}
 
 /* === Hover styles === */
 
