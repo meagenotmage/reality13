@@ -1837,4 +1837,44 @@ footer {
 .accordion-item.active .accordion-icon {
     transform: rotate(180deg);
 }
+@media (max-width: 768px) {
+    .nav-links {
+        display: none !important; /* force hidden by default */
+        flex-direction: column;
+        gap: 10px;
+        background-color: white;
+        padding: 10px;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        text-align: center;
+    }
 
+    .nav-links.show {
+        display: flex !important; /* force visible when toggled */
+    }  
+
+    .hamburger {
+        display: block;
+    }
+
+    nav {
+        position: relative;
+    }
+    
+    .schedule-item {
+        flex-direction: column;
+    }
+    
+    .schedule-time {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #eee;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+}
