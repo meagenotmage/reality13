@@ -133,6 +133,13 @@ nav {
     cursor: pointer;
     color: var(--primary);
 }
+.nav-menu {
+  display: none;
+}
+
+.nav-menu.active {
+  display: block;
+}
 /* Media query for mobile devices */
 @media screen and (max-width: 768px) {
     .nav-links {
