@@ -675,6 +675,16 @@ footer {
         justify-content: center;
     }
 }
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    .hamburger {
+        display: block;
+    }
+}
+
 @media (max-width: 768px) {
     .nav-links {
         display: none !important; /* force hidden by default */
