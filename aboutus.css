@@ -678,15 +678,6 @@ footer {
 
 @media (max-width: 768px) {
     .nav-links {
-        display: none;
-    }
-    .hamburger {
-        display: block;
-    }
-}
-
-@media (max-width: 768px) {
-    .nav-links {
         display: none !important; /* force hidden by default */
         flex-direction: column;
         gap: 10px;
@@ -710,17 +701,6 @@ footer {
 
     nav {
         position: relative;
-    }
-    
-    .schedule-item {
-        flex-direction: column;
-    }
-    
-    .schedule-time {
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid #eee;
-    }
 
     .footer-content {
         grid-template-columns: 1fr;
